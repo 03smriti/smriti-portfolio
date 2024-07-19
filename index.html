@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-4QjsBvU0rAhlYBmMT1kUn4fxsCziZa9arN7v0Q4+VV4t9RErPLFfqYVP02ZPb3EJW7fQug6V6Q0gYsOl6sZpZg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://as2.ftcdn.net/v2/jpg/01/86/88/41/1000_F_186884179_rZtPqBQjFIMfF6j4vz3Y0xMkyBAgSRX9.jpg'); /* Background image URL */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header styles */
+        header {
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background for readability */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.5rem;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffc107;
+        }
+
+        .scroll-down-btn {
+            color: #fff;
+            font-size: 2rem;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .scroll-down-btn i {
+            animation: arrow-bounce 2s infinite;
+        }
+
+        @keyframes arrow-bounce {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Section styles */
+        .section {
+            padding: 50px 0;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background for readability */
+            opacity: 0; /* Initially hidden */
+            transform: translateY(20px); /* Slide down animation */
+            transition: opacity 0.8s ease, transform 0.8s ease; /* Animation transition */
+        }
+
+        .section.active {
+            opacity: 1; /* Visible when active */
+            transform: translateY(0); /* Slide down when active */
+        }
+
+        .section-content {
+            max-width: 1200px; /* Adjusted max-width for better content alignment */
+            margin: 0 auto; /* Center content */
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Project card styles */
+       .project-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap; /* Ensure responsiveness */
+            margin-top: 30px;
+        }
+
+        .project-card {
+            width: 300px; /* Adjust as needed */
+            height: 300px;
+            color: #fff;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+            perspective: 1000px;
+            flex: 1 0 30%; /* Flexible width for responsiveness */
+            margin-bottom: 30px; /* Space between project cards */
+            overflow: hidden; /* Ensure the backface-visibility does not reveal the background image */
+        }
+
+        .project-card:hover {
+            transform: rotateY(360deg);
+        }
+
+        .project-card .front,
+        .project-card .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center; /* Center text */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Optional shadow for better visibility */
+        }
+
+        .project-card .front {
+            background-size: cover;
+            background-position: center;
+        }
+
+        .project-card .back {
+            background-color: #ff3d00; /* Red background color */
+            opacity: 0; /* Initially hidden */
+            transition: transform 0.5s ease, opacity 0.5s ease; /* Transition for transform and opacity */
+            text-align: left; /* Align text properly */
+            padding: 20px; /* Add padding for spacing */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .project-card:hover .back {
+            transform: rotateY(0deg);
+            opacity: 1; /* Visible when flipped */
+        }
+
+        .project-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-card p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-card .btn {
+            display: inline-block;
+            background-color: #ffc107;
+            color: #1f1f1f;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .project-card .btn:hover {
+            background-color: #ffca28;
+        }
+
+        /* Experience card styles */
+        .experience-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap; /* Ensure responsiveness */
+            margin-top: 30px;
+        }
+
+        .experience-card {
+            width: 300px; /* Adjust as needed */
+            height: 300px;
+            color: #fff;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+            perspective: 1000px;
+            flex: 1 0 30%; /* Flexible width for responsiveness */
+            margin-bottom: 30px; /* Space between experience cards */
+            overflow: hidden; /* Ensure the backface-visibility does not reveal the background image */
+        }
+
+        .experience-card:hover {
+            transform: rotateY(360deg);
+        }
+
+        .experience-card .front,
+        .experience-card .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center; /* Center text */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Optional shadow for better visibility */
+        }
+
+        .experience-card .front {
+            background-size: cover;
+            background-position: center;
+        }
+
+        .experience-card .back {
+            background-color: #ff3d00; /* Red background color */
+            opacity: 0; /* Initially hidden */
+            transition: transform 0.5s ease, opacity 0.5s ease; /* Transition for transform and opacity */
+            text-align: left; /* Align text properly */
+            padding: 20px; /* Add padding for spacing */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .experience-card:hover .back {
+            transform: rotateY(0deg);
+            opacity: 1; /* Visible when flipped */
+        }
+
+        .experience-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-card p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        /* Contact section styles */
+        .contact-info {
+            margin-top: 20px;
+        }
+
+        .contact-info p {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-info a {
+            color: #ffc107;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            color: #ffca28;
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background for readability */
+            color: #888;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: auto; /* Footer sticks to the bottom */
+        }
+
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .project-card,
+            .experience-card {
+                flex: 1 0 45%; /* Adjust for smaller screens */
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                background-position: center;
+                height: 80vh; /* Adjust header height for better visibility */
+            }
+
+            .project-container,
+            .experience-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .project-card,
+            .experience-card {
+                width: 100%; /* Full width for mobile */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="home">
+        <div class="header-content">
+            <h1>My Portfolio</h1>
+            <p>Web Developer | Designer | Programmer</p>
+            <nav>
+                <ul>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <a href="#introduction" class="scroll-down-btn"><i class="fas fa-chevron-down"></i></a>
+        </div>
+    </header>
+
+    <section id="introduction" class="section">
+        <div class="section-content">
+            <h2>Hello there, I'm Smriti Choubey</h2>
+            <p>Welcome to my portfolio! I am a recent graduate from BIT Mesra, holding a degree in Bachelor of Computer
+                Applications (BCA). My academic journey has equipped me with a robust foundation in computer science and
+                a specialization in web development.</p>
+
+            <p>During my time at BIT Mesra, I cultivated a strong interest in the dynamic and evolving field of web
+                development. I am particularly enthusiastic about leveraging my skills in Python to create efficient and
+                innovative solutions in this domain.</p>
+
+            <p>Through coursework and personal projects, I have honed my abilities in Python programming, which has not
+                only sharpened my logical thinking but also enabled me to develop scalable web applications. I am
+                proficient in using Python frameworks like Django and Flask, and I enjoy exploring new technologies to
+                expand my skill set further.</p>
+
+            <p>As I embark on the next phase of my career, I am eager to contribute my passion for web development,
+                coupled with my academic foundation and practical skills, to meaningful projects that push the boundaries
+                of innovation.</p>
+
+            <p>Thank you for visiting my portfolio, and I look forward to connecting with you!</p>
+        </div>
+    </section>
+    <section id="projects" class="section">
+        <div class="section-content">
+            <h2>Projects</h2>
+            <div class="project-container">
+                <div class="project-card">
+                    <div class="front"
+                        style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmmWe_nbP-TO8SH-DIBAqCJjiURy0KEAfMfw&s');">
+                        <h3>Kashi Tourism</h3>
+                    </div>
+                    <div class="back">
+                    <p><i>"Explore Kashi" is a dynamic and user-friendly tourism website aimed at promoting the
+                            cultural heritage, spiritual richness, and historical significance of Kashi (Varanasi) to
+                            both domestic and international tourists. The website serves as a one-stop platform for
+                            travelers seeking information about attractions, accommodations, dining options, events, and
+                            cultural experiences in and around Kashi. It is designed to inspire visitors to explore the
+                            city's vibrant tap.</i></p>
+                    </div>
+                </div>
+    
+
+                <div class="project-card">
+                    <div class="front"
+                        style="background-image: url('https://img.freepik.com/premium-photo/red-themed-cyber-anime-girl-generative-ai_343887-800.jpg');">
+                        <h3>Akuza</h3>
+                    </div>
+                    <div class="back">
+                    <p><i>CampusConnect is an advanced conversational AI chatbot designed to enhance the student
+                            experience by providing instant, accurate, and accessible information about college-related
+                            inquiries. Built using state-of-the-art natural language processing (NLP) techniques and
+                            machine learning algorithms, CampusConnect aims to streamline communication between students
+                            and the college administration, reduce the workload of administrative staff, and ensure
+                            that students have access to essential information 24/7</i></p>
+                    
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="front"
+                        style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGIe0NfXg8spBbHvu0f3LKoUAh16ZIjUsliA&s');">
+                        <h3>BlossomBazaar</h3>
+                    </div>
+                    <div class="back">
+                        <p><i>Blossom Bazaar is your one-stop shop for beautiful flowers, plants, and related items. </i></p><p><i>We provide detailed information about various flower shops from all over India to make your flower search journey more fun and interesting</i></p>
+                    
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="front"
+                        style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTOWO-f2AeY7EZWW8INfJ2vOMreSR2X1_cyA&s');">
+                        <h3>Smart-Method-GetPass-System</h3>
+                    </div>
+                    <div class="back">
+                        <p><i>The SMART Method GetPass System is designed to enhance security and efficiency in accessing restricted areas or systems within an organization.<i></i></p><p><i>The project utilizes the SMART (Specific, Measurable, Achievable, Relevant, Time-bound) methodology to develop a robust access control system. Key features include biometric authentication (fingerprint or facial recognition), a centralized database for user management, real-time logging and reporting of access events, and integration with existing security protocols.</i></p><p><i>The system aims to streamline access procedures while ensuring stringent security measures are in place, contributing to a safer and more efficient organizational environment.</i></p>
+                    
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="front"
+                        style="background-image: url('');">
+                        <h3>next proj</h3>
+                    </div>
+                    <div class="back">
+                        <p></p>
+                    
+                    </div>
+               
+                
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="section">
+        <div class="section-content">
+            <h2>Experience</h2>
+            <div class="experience-container">
+                <div class="experience-card">
+                    <div class="front"
+                        style="background-color: #111;">
+                        <h3>Internship at Tata Steels</h3>
+                    </div>
+                    <div class="back">
+                        <p><i>During my internship at Tata Steels Company, I was responsible for developing and maintaining
+                            website using html, javascript, CSS, boothstrap and react . I worked closely with the senior
+                            developers and contributed to projects, enhancing my skills in full-stack web development
+                            and gaining valuable industry experience.</i></p>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+                <!-- Add more experiences -->
+            </div>
+        </div>
+    </section>
+            </div>
+            <div class="back">
+                <!-- Back of the card (empty for now, but will show skills on flip) -->
+                <section id="skills" class="section">
+                    <div class="section-content">
+                        <h2>Skills</h2>
+                        <p>Here are some of my key skills:</p>
+                        <ul>
+                            <li>HTML/CSS: Fundamental for creating the structure and styling of websites.</li>
+                            <li>JavaScript: Essential for interactive elements, animations, and dynamic content.</li>
+                            <li>Responsive Design: Ensure website looks great and functions well across various devices and screen sizes.</li>
+                            <li>Frameworks and Libraries: Depending on needs, frameworks like Bootstrap for responsive design or React.js for dynamic interfaces could be useful.</li>
+                            <li>Backend Development: Handling transactions or user data, knowledge of backend technologies like Node.js, Django, or Flask would be valuable.</li>
+                            <li>Version Control: Using Git for managing project's source code.</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="back">
+            <!-- Back of the card (empty for now, but will show skills on flip) -->
+            <section id="Certificates" class="section">
+                <div class="section-content">
+                    <h2> Certificates</h2>
+                    <p>Here are some of my Certificates:</p>
+                    <ol>
+                        <li>Content Head, DebSoc Society</li>
+                        <li>Event Coordinator Head, CSS Society</li>
+                        <li>AWS Skill Certificate: Foundation of Cloud Engineering</li>
+                        <li>AWS Skill Certificate: AWS Command Line Interface</li>
+                        <li>Geekster: SQL Basics to Advanced</li>
+                        <li>Great Learning: Python Fundamentals</li>
+                    </ul>
+                </div>
+    </div>
+    
+        </div>
+    </section>
+    
+
+    <section id="contact" class="section">
+        <div class="section-content">
+            <h2>Contact</h2>
+            <div class="contact-info">
+                <p>Email: <a href="mailto:smritichoubey79@gmail.com">smritichoubey79@gmail.com</a></p>
+                <p>Phone: <a href="tel:+916202110217">+916202110217</a></p>
+                <p>LinkedIn: <a href="https://www.linkedin.com/in/smritichoubey" target="_blank">www.linkedin.com/in/smritichoubey</a>
+                </p>
+                <p>GitHub: <a href="https://github.com/03smri" target="_blank">https://github.com/03smriti</a>
+                   </p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 Smriti Choubey. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Intersection Observer to add 'active' class to sections when in view
+        const sections = document.querySelectorAll('.section');
+
+        const observerOptions = {
+            rootMargin: '-50px 0px -50px 0px', // Adjusted rootMargin for better visibility
+            threshold: 0.5 // Percentage of section visible
+        };
+
+        const sectionObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+    </script>
+</body>
+
+</html>
